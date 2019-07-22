@@ -44,8 +44,51 @@ document.querySelector('.btn-roll').addEventListener('click', function(){
 	}
 	else{
 		//Next Player
+		nextPlayer();
+		
+	}
 
-		activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+});
+
+//use event listener on hold button
+document.querySelector('.btn-hold').addEventListener('click', function(){
+	//Add current score to total score
+	scores[activePlayer] += roundScore;
+	document.getElementById('score-'+activePlayer).textContent = scores[activePlayer];
+
+	//Compare the winner
+	if (scores[activePlayer] >= 10){
+		document.querySelector('#name-'+ activePlayer).textContent = 'WINNER';
+		document.querySelector('.dice').style.display = 'none';
+		document.querySelector('.player-'+activePlayer+'-panel').classList.toggle('active');
+		document.querySelector('.btn-roll').style.display = 'none';
+		document.querySelector('.btn-hold').style.display = 'none';
+	}
+	else{
+		//Next player
+		nextPlayer();
+	}	
+});
+
+//use event listener on new game button
+document.querySelector('.btn-new').addEventListener('click', function(){
+	//nullify all the score
+	document.querySelector('#current-0').textContent ='0';
+	document.querySelector('#current-1').textContent ='0';
+	document.querySelector('#score-0').textContent ='0';
+	document.querySelector('#score-1').textContent ='0';
+
+	//display the roll btn and the hold btn
+	document.querySelector('.btn-hold').style.display = 'block';
+	document.querySelector('.btn-roll').style.display = 'block';
+
+	//make player zero active again
+	document.querySelector('player-0-panel').classList.add('active');
+});
+
+
+function nextPlayer(){
+	activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
 		roundScore = 0;
 		document.getElementById('current-0').textContent = '0';
 		document.getElementById('current-1').textContent = '0';
@@ -56,7 +99,4 @@ document.querySelector('.btn-roll').addEventListener('click', function(){
 
 		//hide the dice while toggle
 		document.querySelector('.dice').style.display = 'none';
-	}
-
-});
-
+}
