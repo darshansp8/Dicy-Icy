@@ -1,6 +1,6 @@
 // variable declarations
 
-var scores, roundScore, activePlayer, gamePlaying;
+var scores, roundScore, activePlayer, gamePlaying, lastDice;
 
 scores = [0,0];
 roundScore = 0;
@@ -18,18 +18,24 @@ document.querySelector('.btn-roll').addEventListener('click', function(){
 		var diceDOM = document.querySelector('.dice');
 		diceDOM.style.display = 'block';
 		diceDOM.src = 'dice-'+dice+'.png';
-
+		if(dice === 6 && lastDice === 6){
+			//Player looses the score
+			scores[activePlayer] = 0;
+			document.getElementById('score-'+activePlayer).textContent = '0';
+			nextPlayer();
+		}
 		//Update round score to 0 if dice shows 1
-		if(dice !==1){
+		else if(dice !==1){
 			//Add Score
 			roundScore += dice;
 			document.getElementById('current-'+activePlayer).textContent = roundScore;
 		}
 		else{
 			//Next Player
-			nextPlayer();
-			
+			nextPlayer();	
 		}
+
+		lastDice = dice;
 	}
 });
 
@@ -64,16 +70,16 @@ document.querySelector('.btn-new').addEventListener('click', init);
 
 function nextPlayer(){
 	activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
-		roundScore = 0;
-		document.getElementById('current-0').textContent = '0';
-		document.getElementById('current-1').textContent = '0';
+	roundScore = 0;
+	document.getElementById('current-0').textContent = '0';
+	document.getElementById('current-1').textContent = '0';
 
-		//toggle the active player
-		document.querySelector('.player-0-panel').classList.toggle('active');
-		document.querySelector('.player-1-panel').classList.toggle('active');
+	//toggle the active player
+	document.querySelector('.player-0-panel').classList.toggle('active');
+	document.querySelector('.player-1-panel').classList.toggle('active');
 
-		//hide the dice while toggle
-		document.querySelector('.dice').style.display = 'none';
+	//hide the dice while toggle
+	document.querySelector('.dice').style.display = 'none';
 }
 
 
